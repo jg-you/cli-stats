@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
   /****************************************************************/
   // variables declaration
   std::string intput_path;
-  unsigned int row_idx=0;
+  unsigned int column_idx=0;
   unsigned int precision=8;
   unsigned int number_of_bins=10;
   double lower_bound=0;
@@ -36,8 +36,8 @@ int main(int argc, char const *argv[]) {
   description.add_options()
   ("intput_path,i",boost::program_options::value<std::string>(&intput_path)->default_value(""),
     "Path to the edge list file.")
-  ("row_idx,r",boost::program_options::value<unsigned int>(&row_idx),
-    "Row index of the raw data (starting from row 0).")
+  ("column_idx,c",boost::program_options::value<unsigned int>(&column_idx),
+    "Column index of the raw data (starting from column 0).")
   ("precision,p",boost::program_options::value<unsigned int>(&precision),
     "Precision of the output.")
   ("number_of_bins,b",boost::program_options::value<unsigned int>(&number_of_bins),
@@ -85,7 +85,7 @@ int main(int argc, char const *argv[]) {
   double data_buffer;
   while( getline(file,line_buffer) ) {
     std::stringstream line_buffer_stream(line_buffer);
-    for (unsigned int i = 0;  i <= row_idx; ++i) line_buffer_stream >> data_buffer;
+    for (unsigned int i = 0;  i <= column_idx; ++i) line_buffer_stream >> data_buffer;
     // data_buffer contains the relevant data
     if (!ignore_null || std::abs(data_buffer)>tolerance) {
       unsigned int bin_idx = 0;

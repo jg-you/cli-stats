@@ -35,12 +35,12 @@ For the following raw data file
     9  9    0.75
     10  40  0.88
 
-One could obtain the discrete distribution of the value in row 1 (row are numbered from 0 to n-1) with
+One could obtain the discrete distribution of the value in column 1 (column are numbered from 0 to n-1) with
 
-    discrete_distribution -i file.dat -r 1 --are_int
+    discrete_distribution -i file.dat -c 1 --are_int
 
-or the binned distribution of the values in row 2 with 5 bins spanning the range [0.5, 1.0] using
+or the binned distribution of the values in column 2 with 5 bins spanning the range [0.5, 1.0] using
     
-    binned_discrete_distribution -i file.dat -l 0.5 -u 1.0 -b 5 
+    binned_discrete_distribution -i file.dat -l 0.5 -u 1.0 -b 5 -c 2
 
 Please use the `--help` flag to see the list of available commands.

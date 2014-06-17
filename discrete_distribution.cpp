@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]) {
   /****************************************************************/
   // variables declaration
   std::string intput_path;
-  unsigned int row_idx=0;
+  unsigned int columnn_idx=0;
   unsigned int precision=8;
   double tolerance=1e-10;
 
@@ -30,8 +30,8 @@ int main(int argc, char const *argv[]) {
   description.add_options()
   ("intput_path,i",boost::program_options::value<std::string>(&intput_path)->default_value(""),
     "Path to the edge list file.")
-  ("row_idx,r",boost::program_options::value<unsigned int>(&row_idx),
-    "Row index of the raw data (starting from row 0).")
+  ("columnn_idx,c",boost::program_options::value<unsigned int>(&columnn_idx),
+    "Column index of the raw data (starting from column 0).")
   ("precision,p",boost::program_options::value<unsigned int>(&precision),
     "Precision of the output.")
   ("are_int" ,"Key values are integer.")
@@ -67,7 +67,7 @@ int main(int argc, char const *argv[]) {
     double data_buffer;
     while( getline(file,line_buffer) ) {
       std::stringstream line_buffer_stream(line_buffer);
-      for (unsigned int i = 0;  i <= row_idx; ++i) line_buffer_stream >> data_buffer;
+      for (unsigned int i = 0;  i <= columnn_idx; ++i) line_buffer_stream >> data_buffer;
       // data_buffer contains the relevant data
       if (!ignore_null || std::abs(data_buffer)>tolerance) {
         auto ret_value = seen.insert(data_buffer);
@@ -94,7 +94,7 @@ int main(int argc, char const *argv[]) {
     double data_buffer;
     while( getline(file,line_buffer) ) {
       std::stringstream line_buffer_stream(line_buffer);
-      for (unsigned int i = 0;  i <= row_idx; ++i) line_buffer_stream >> data_buffer;
+      for (unsigned int i = 0;  i <= columnn_idx; ++i) line_buffer_stream >> data_buffer;
       // data_buffer contains the relevant data
       if (!ignore_null || std::abs(data_buffer)>tolerance) {
         auto ret_value = seen.insert(data_buffer);
