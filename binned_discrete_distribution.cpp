@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]) {
   /*  Parse arguments with boost::program_options                 */
   /****************************************************************/
   // variables declaration
-  std::string intput_path;
+  std::string input_path;
   unsigned int column_idx=0;
   unsigned int precision=8;
   unsigned int number_of_bins=10;
@@ -34,7 +34,7 @@ int main(int argc, char const *argv[]) {
   // boost::po declarations
   po::options_description description(" Options");
   description.add_options()
-  ("intput_path,i",boost::program_options::value<std::string>(&intput_path)->default_value(""),
+  ("input_path,i",boost::program_options::value<std::string>(&input_path)->default_value(""),
     "Path to the edge list file.")
   ("column_idx,c",boost::program_options::value<unsigned int>(&column_idx),
     "Column index of the raw data (starting from column 0).")
@@ -78,7 +78,7 @@ int main(int argc, char const *argv[]) {
     bin_limits[i]= lower_bound + ( (double) i / ((double) number_of_bins) ) * ( upper_bound-lower_bound ) ; 
   }
 
-  std::ifstream file(intput_path.c_str(),std::ios::in);
+  std::ifstream file(input_path.c_str(),std::ios::in);
   double normalization = 0;
   // read file
   std::string line_buffer; 
