@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]) {
     "Path to the edge list file.")
   ("column_idx,c",boost::program_options::value<unsigned int>(&column_idx),
     "Column index of the raw data (starting from column 0).")
-  ("row_idx,c",boost::program_options::value<unsigned int>(&row_idx),
+  ("row_idx,r",boost::program_options::value<unsigned int>(&row_idx),
     "Row index of the raw data (starting from column 0). Conflicts and override column_idx mode, which is the default behavior ")
   ("precision,p",boost::program_options::value<unsigned int>(&precision),
     "Precision of the output.")
@@ -104,7 +104,10 @@ int main(int argc, char const *argv[]) {
   else {
     // row mode
     unsigned int row_count = 0;
-    while(row_count<=row_idx)  getline(file,line_buffer);
+    while(row_count<=row_idx)  {
+      getline(file,line_buffer);
+      ++row_count;
+    }
     std::stringstream line_buffer_stream(line_buffer);
     while (line_buffer_stream >> data_buffer) {
       if (!ignore_null || std::abs(data_buffer)>tolerance) {
