@@ -8,9 +8,9 @@ Memory usage is kept to a minimum by dumping everything to the standard output w
 ### Compilation
 
     # discrete_distribution.cpp
-    g++ -o3 -W -Wall -Wextra -pedantic -std=c++0x discrete_distribution.cpp -lboost_program_options -larmadillo -o discrete_distribution
+    g++ -o3 -W -Wall -Wextra -pedantic -std=c++0x discrete_distribution.cpp -lboost_program_options -o discrete_distribution
     # binned_discrete_distribution.cpp
-    g++ -o3 -W -Wall -Wextra -pedantic -std=c++0x binned_discrete_distribution.cpp -lboost_program_options -larmadillo -o binned_discrete_distribution
+    g++ -o3 -W -Wall -Wextra -pedantic -std=c++0x binned_discrete_distribution.cpp -lboost_program_options -o binned_discrete_distribution
 
 ### Installation 
 

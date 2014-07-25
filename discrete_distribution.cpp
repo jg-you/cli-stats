@@ -1,7 +1,7 @@
 // Compute a unbinned distribution from a set of raw data.
 // A column may be specified by arguments
-// Compilation [requires the dev boost package and armadillo 3.2 +]: 
-// g++ -o3 -W -Wall -Wextra -pedantic -std=c++0x discrete_distribution.cpp -lboost_program_options -larmadillo -o discrete_distribution
+// Compilation [requires the dev boost package]: 
+// g++ -o3 -W -Wall -Wextra -pedantic -std=c++0x discrete_distribution.cpp -lboost_program_options -o discrete_distribution
 #include <cstdlib> 
 #include <iostream>
 #include <iomanip>

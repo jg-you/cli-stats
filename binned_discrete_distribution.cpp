@@ -1,7 +1,7 @@
 // Compute a binned distribution from a set of raw data.
 // A column may be specified by arguments
-// Compilation [requires the dev boost package and armadillo 3.2 +]: 
-// g++ -o3 -W -Wall -Wextra -pedantic -std=c++0x binned_discrete_distribution.cpp -lboost_program_options -larmadillo -o binned_discrete_distribution
+// Compilation [requires the dev boost package]: 
+// g++ -o3 -W -Wall -Wextra -pedantic -std=c++0x binned_discrete_distribution.cpp -lboost_program_options -o binned_discrete_distribution
 
 #include <cstdlib> 
 #include <cmath> 
@@ -25,6 +25,7 @@ int main(int argc, char const *argv[]) {
   // variables declaration
   std::string input_path;
   unsigned int column_idx=0;
+  unsigned int row_idx=0;
   unsigned int precision=8;
   unsigned int number_of_bins=10;
   double lower_bound=0;
@@ -38,6 +39,8 @@ int main(int argc, char const *argv[]) {
     "Path to the edge list file.")
   ("column_idx,c",boost::program_options::value<unsigned int>(&column_idx),
     "Column index of the raw data (starting from column 0).")
+  ("row_idx,c",boost::program_options::value<unsigned int>(&row_idx),
+    "Row index of the raw data (starting from column 0). Conflicts and override column_idx mode, which is the default behavior ")
   ("precision,p",boost::program_options::value<unsigned int>(&precision),
     "Precision of the output.")
   ("number_of_bins,b",boost::program_options::value<unsigned int>(&number_of_bins),
@@ -83,18 +86,38 @@ int main(int argc, char const *argv[]) {
   // read file
   std::string line_buffer; 
   double data_buffer;
-  while( getline(file,line_buffer) ) {
-    std::stringstream line_buffer_stream(line_buffer);
-    for (unsigned int i = 0;  i <= column_idx; ++i) line_buffer_stream >> data_buffer;
-    // data_buffer contains the relevant data
-    if (!ignore_null || std::abs(data_buffer)>tolerance) {
-      unsigned int bin_idx = 0;
-      for (; bin_limits[bin_idx] <= data_buffer; ++bin_idx) {};
-      // data is between limits of bin_idx-1 and bin_idx, thus in bins @ bin_idx-1 (due to the lower bound being the first bin limit)
-      bins[bin_idx-1] += 1.0;
-      normalization += 1.0;
+  if (var_map.count("row_idx")==0) {
+    // column mode
+    while( getline(file,line_buffer) ) {
+      std::stringstream line_buffer_stream(line_buffer);
+      for (unsigned int i = 0;  i <= column_idx; ++i) line_buffer_stream >> data_buffer;
+      // data_buffer contains the relevant data
+      if (!ignore_null || std::abs(data_buffer)>tolerance) {
+        unsigned int bin_idx = 0;
+        for (; bin_limits[bin_idx] <= data_buffer; ++bin_idx) {};
+        // data is between limits of bin_idx-1 and bin_idx, thus in bins @ bin_idx-1 (due to the lower bound being the first bin limit)
+        bins[bin_idx-1] += 1.0;
+        normalization += 1.0;
+      }
     }
   }
+  else {
+    // row mode
+    unsigned int row_count = 0;
+    while(row_count<=row_idx)  getline(file,line_buffer);
+    std::stringstream line_buffer_stream(line_buffer);
+    while (line_buffer_stream >> data_buffer) {
+      if (!ignore_null || std::abs(data_buffer)>tolerance) {
+        unsigned int bin_idx = 0;
+        for (; bin_limits[bin_idx] <= data_buffer; ++bin_idx) {};
+        // data is between limits of bin_idx-1 and bin_idx, thus in bins @ bin_idx-1 (due to the lower bound being the first bin limit)
+        bins[bin_idx-1] += 1.0;
+        normalization += 1.0;
+      }
+    }
+  }
+
+  // binning
   for (unsigned int i = 0 ; i < number_of_bins; ++i) {
     std::cout  << std::left <<  std::setprecision(precision) << std::setw(16)  << (bin_limits[i+1]+bin_limits[i])/2 << "\t" 
                <<  std::setprecision(precision) << std::setw(precision*2) << bins[i] / normalization << "\n";
