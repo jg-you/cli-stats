@@ -24,6 +24,7 @@ int main(int argc, char const *argv[]) {
   unsigned int columnn_idx=0;
   unsigned int precision=8;
   double tolerance=1e-10;
+  double set_norm;
 
   // boost::po declarations
   po::options_description description(" Options");
@@ -34,6 +35,8 @@ int main(int argc, char const *argv[]) {
     "Column index of the raw data (starting from column 0).")
   ("precision,p",boost::program_options::value<unsigned int>(&precision),
     "Precision of the output.")
+  ("normalization,n",boost::program_options::value<double>(&set_norm),
+    "Normalize to a value that potentially differs from the sum of all data.")
   ("are_int" ,"Key values are integer.")
   ("ignore_null","Ignore null entries (with given tolerance).")
   ("tolerance,t",boost::program_options::value<double>(&tolerance),
@@ -63,7 +66,7 @@ int main(int argc, char const *argv[]) {
     std::ifstream file(input_path.c_str(),std::ios::in);
     double normalization = 0;
     // read file
-    std::string line_buffer; 
+    std::string line_buffer;
     double data_buffer;
     while( getline(file,line_buffer) ) {
       std::stringstream line_buffer_stream(line_buffer);
@@ -79,6 +82,9 @@ int main(int argc, char const *argv[]) {
         }
         ++normalization;
       }
+    }
+    if (var_map.count("normalization")>0) {
+      normalization = set_norm;
     }
     for (auto it = seen.begin(); it != seen.end(); ++it) {
       std::cout << std::left <<  std::setprecision(100) << std::setw(16) << *it << "\t" <<  std::setprecision(precision) << std::setw(precision*2) << discrete_distribution[*it] / normalization << "\n";
@@ -106,6 +112,9 @@ int main(int argc, char const *argv[]) {
         }
         ++normalization;
       }
+    }
+    if (var_map.count("normalization")>0) {
+      normalization = set_norm;
     }
     for (auto it = seen.begin(); it != seen.end(); ++it) {
       std::cout << std::fixed << std::left << std::setprecision(precision) << std::setw(precision*2) <<  *it << discrete_distribution[*it] / normalization << "\n";
