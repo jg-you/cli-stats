@@ -165,9 +165,9 @@ int main(int argc, char const *argv[]) {
       std::clog << "CCDF mode selected.\n";
       double accu = 0;
       for (unsigned int idx = 0; idx < nb_of_unique_elements; ++idx) {
-        accu += gsl_histogram_get (h, idx) / norm;
         std::cout << std::fixed << std::left << std::setprecision(precision) << std::setw(precision*2) 
                   << (int) round(range[idx] + 0.1) << "\t" << 1 - accu << "\n";
+        accu += gsl_histogram_get (h, idx) / norm;
       }
     }
     else {
